@@ -26,7 +26,7 @@ const activeGames = {};
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
   // Interaction type and data
   const { type, id, data } = req.body;
-
+  console.log(`type=${type}`);
   /**
    * Handle verification requests
    */
@@ -43,6 +43,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     // "test" command
     if (name === 'test') {
+      console.log(JSON.stringify(req.body));
       // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -55,6 +56,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     // "challenge" command
     if (name === 'challenge' && id) {
+      console.log(JSON.stringify(req.body));
       // Interaction context
       const context = req.body.context;
       // User ID is in user field for (G)DMs, and member for servers
@@ -72,7 +74,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           // Fetches a random emoji to send from a helper function
-          content: `Rock papers scissors challenge from <@${userId}>`,
+          content: `Mày oẳn tù tì với tao: <@${userId}>`,
           components: [
             {
               type: MessageComponentTypes.ACTION_ROW,
@@ -100,6 +102,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
    * See https://discord.com/developers/docs/interactions/message-components#responding-to-a-component-interaction
    */
   if (type === InteractionType.MESSAGE_COMPONENT) {
+    console.log(`data=${data}`);
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
@@ -112,7 +115,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         await res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'What is your object of choice?',
+            content: 'Mày ra gì?',
             // Indicates it'll be an ephemeral message
             flags: InteractionResponseFlags.EPHEMERAL,
             components: [
@@ -177,9 +180,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       }
     }
   }
-
-  console.error('unknown interaction type', type);
-  return res.status(400).json({ error: 'unknown interaction type' });
 });
 
 app.listen(PORT, () => {
