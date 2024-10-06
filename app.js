@@ -10,6 +10,15 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { Client, GatewayIntentBits } from 'discord.js';
+
+// Khởi tạo bot
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+// Đăng ký sự kiện 'ready'
+client.once('ready', () => {
+    console.log(`${client.user.tag} đã sẵn sàng!`);
+});
 
 // Create an express app
 const app = express();

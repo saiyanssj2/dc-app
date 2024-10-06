@@ -10,7 +10,7 @@ export async function DiscordRequest(endpoint, options) {
     headers: {
       Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
       'Content-Type': 'application/json; charset=UTF-8',
-      'User-Agent': 'DiscordBot (https://github.com/saiyanssj2/dc-app, 1.0.0)',
+      'User-Agent': 'DiscordBot (https://github.com/saiyanssj2/dc_app, 1.0.0)',
     },
     ...options
   });
